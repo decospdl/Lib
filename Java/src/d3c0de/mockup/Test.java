@@ -1,6 +1,6 @@
-package mockup;
+package d3c0de.mockup;
 
-import database.Query;
+import d3c0de.database.Query;
 
 /**
  * Classe para teste da lib.

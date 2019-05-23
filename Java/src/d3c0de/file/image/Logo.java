@@ -1,6 +1,6 @@
-package file.image;
+package d3c0de.file.image;
 
-import file.File;
+import d3c0de.file.File;
 
 /**
  * Enum com todos os logos disponiveis no projeto.

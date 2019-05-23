@@ -1,4 +1,4 @@
-package swing.table;
+package d3c0de.swing.table;
 
 import java.awt.Component;
 import java.awt.FontMetrics;

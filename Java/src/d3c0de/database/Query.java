@@ -1,4 +1,4 @@
-package database;
+package d3c0de.database;
 
 /**
  * Classe para execução de queries junto com a classe ConnectionMySql.

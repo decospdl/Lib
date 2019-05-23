@@ -1,8 +1,8 @@
-package mockup;
+package d3c0de.mockup;
 
-import database.ConfigMySql;
-import database.ConnectionMySql;
-import database.Query;
+import d3c0de.database.ConfigMySql;
+import d3c0de.database.ConnectionMySql;
+import d3c0de.database.Query;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;

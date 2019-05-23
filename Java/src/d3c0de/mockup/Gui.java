@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mockup;
+package d3c0de.mockup;
 
-import database.ConfigMySql;
-import mockup.PersonTab;
-import database.ConnectionMySql;
+import d3c0de.database.ConfigMySql;
+import d3c0de.mockup.PersonTab;
+import d3c0de.database.ConnectionMySql;
 
 /**
  *

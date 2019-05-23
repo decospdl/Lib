@@ -1,4 +1,4 @@
-package database;
+package d3c0de.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

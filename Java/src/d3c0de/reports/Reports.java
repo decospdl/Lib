@@ -1,4 +1,4 @@
-package reports;
+package d3c0de.reports;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;

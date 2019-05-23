@@ -1,4 +1,4 @@
-package date;
+package d3c0de.date;
 
 /**
  * Classe para definição dos nomes do dia da semana.

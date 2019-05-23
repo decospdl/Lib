@@ -1,7 +1,7 @@
-package mockup;
+package d3c0de.mockup;
 
 import swing.component.TableStyle;
-import swing.table.TableModel;
+import d3c0de.swing.table.TableModel;
 import java.util.LinkedList;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;

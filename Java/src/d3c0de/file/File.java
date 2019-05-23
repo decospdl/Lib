@@ -1,4 +1,4 @@
-package file;
+package d3c0de.file;
 
 /**
  * Classe para tratamento de arquivos.

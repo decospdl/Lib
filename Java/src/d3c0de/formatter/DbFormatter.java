@@ -1,6 +1,6 @@
-package formatter;
+package d3c0de.formatter;
 
-import date.Date;
+import d3c0de.date.Date;
 
 /**
  * Classe para formatação de campos retornado pelo o database.

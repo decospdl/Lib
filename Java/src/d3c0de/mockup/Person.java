@@ -1,4 +1,4 @@
-package mockup;
+package d3c0de.mockup;
 
 /**
  *

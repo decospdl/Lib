@@ -1,4 +1,4 @@
-package formatter;
+package d3c0de.formatter;
 
 /**
  * Classe abstrata com vários Regex para validação de inputs do usuário.

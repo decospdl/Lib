@@ -1,4 +1,4 @@
-package swing.table;
+package d3c0de.swing.table;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
