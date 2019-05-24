@@ -3,6 +3,9 @@ package d3c0de.date;
 import d3c0de.formatter.DateFormatter;
 import d3c0de.formatter.NumberFormatter;
 import d3c0de.validate.Validate;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Period;
 import java.util.GregorianCalendar;
 
 /**
@@ -13,10 +16,10 @@ import java.util.GregorianCalendar;
  * @author deCOde < decospdl@gmail.com>
  */
 public class Time {
-
-    public static int NOW_HOUR = DateFormatter.hour(new GregorianCalendar(Calendar.TIME_ZONE, Calendar.LOCAL));
-    public static int NOW_MINUTE = DateFormatter.minute(new GregorianCalendar(Calendar.TIME_ZONE, Calendar.LOCAL));
-    public static int NOW_SECOND = DateFormatter.second(new GregorianCalendar(Calendar.TIME_ZONE, Calendar.LOCAL));
+    
+    public static int NOW_HOUR = LocalTime.now().getHour();
+    public static int NOW_MINUTE = LocalTime.now().getMinute();
+    public static int NOW_SECOND = LocalTime.now().getSecond();
     private int hour;
     private int minute;
     private int second;
@@ -25,9 +28,9 @@ public class Time {
      * Construtor default inicia com horário do dia.
      */
     public Time() {
-        this.hour = DateFormatter.hour(new GregorianCalendar(Calendar.TIME_ZONE, Calendar.LOCAL));
-        this.minute = DateFormatter.minute(new GregorianCalendar(Calendar.TIME_ZONE, Calendar.LOCAL));
-        this.second = DateFormatter.second(new GregorianCalendar(Calendar.TIME_ZONE, Calendar.LOCAL));
+        this.hour = LocalTime.now().getHour();
+        this.minute = LocalTime.now().getMinute();
+        this.second = LocalTime.now().getSecond();
     }
 
     /**
@@ -48,12 +51,9 @@ public class Time {
      * @return o objeto atualizado com o novo valor.
      */
     public Time setTime(String time) {
-        Validate.rangeOutside(DateFormatter.hour(time), 0, 24);
-        Validate.rangeOutside(DateFormatter.minute(time), 0, 59);
-        Validate.rangeOutside(DateFormatter.second(time), 0, 59);
-        this.hour = DateFormatter.hour(time);
-        this.minute = DateFormatter.minute(time);
-        this.second = DateFormatter.second(time);
+        this.hour = LocalTime.parse(time).getHour();
+        this.minute = LocalTime.parse(time).getMinute();
+        this.second = LocalTime.parse(time).getSecond();
         return this;
     }
 
@@ -63,7 +63,7 @@ public class Time {
      * @return o valor do horário do DTime.
      */
     public String getTime() {
-        return getHour() + ":" + getMinute() + ":" + getSecond();
+        return LocalTime.of(hour, minute, second).toString();
     }
 
     /**
@@ -71,8 +71,8 @@ public class Time {
      *
      * @return o valor da hora do DTtime.
      */
-    public String getHour() {
-        return NumberFormatter.lengthNumber(hour, 2);
+    public int getHour() {
+        return hour;
     }
 
     /**
@@ -80,8 +80,8 @@ public class Time {
      *
      * @return o valor do minuto do DTime.
      */
-    public String getMinute() {
-        return NumberFormatter.lengthNumber(minute, 2);
+    public int getMinute() {
+        return minute;
     }
 
     /**
@@ -89,8 +89,8 @@ public class Time {
      *
      * @return o valor do segundo do DTime.
      */
-    public String getSecond() {
-        return NumberFormatter.lengthNumber(second, 2);
+    public int getSecond() {
+        return second;
     }
 
     /**
@@ -112,7 +112,7 @@ public class Time {
      * @return
      */
     public Time setMinute(int minute) {
-         Validate.rangeOutside(minute, 0, 59);
+        Validate.rangeOutside(minute, 0, 59);
         this.minute = minute;
         return this;
     }
@@ -135,6 +135,7 @@ public class Time {
      * @return o valor em segundos.
      */
     public int convertSecond() {
+       LocalTime.of(hour, minute, second).toSecondOfDay();
         return (hour * 3600) + (minute * 60) + second;
     }
 
