@@ -1,11 +1,18 @@
 package d3c0de.mockup;
 
+import com.michaelbaranov.microba.calendar.DatePicker;
+import d3c0de.swing.table.CellEditorDatePicker;
 import swing.component.TableStyle;
 import d3c0de.swing.table.TableModel;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.LinkedList;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableColumn;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 
@@ -34,21 +41,24 @@ public class PersonTab {
      */
     public void configTableModel() {
         model = new TableModel(table, tableValues);
-        model.setClassColumn(new Class[]{String.class, Integer.class});
-        model.setColumnNames(new String[]{"name", "age"});
-        model.setEditableColumns(new int[]{0, 1});
+        model.setClassColumn(new Class[]{String.class, Integer.class, Date.class});
+        model.setColumnNames(new String[]{"name", "age", "data_aniversário"});
+        model.setEditableColumns(new int[]{0, 1, 2});
         model.setPrimaryKey(0);
         model.setRowCount((tableValues == null) ? 0 : tableValues.length);
         model.start();
     }
 
     private void createTableValues(LinkedList<Person> persons) {
-        Object[][] values = new Object[persons.size()][2];
-        for (int i = 0; i < persons.size(); i++) {
-            values[i][0] = persons.get(i).getName();
-            values[i][1] = persons.get(i).getAge();
+        if (persons != null) {
+            Object[][] values = new Object[persons.size()][3];
+            for (int i = 0; i < persons.size(); i++) {
+                values[i][0] = persons.get(i).getName();
+                values[i][1] = persons.get(i).getAge();
+                values[i][2] = persons.get(i).getData_aniversario();
+            }
+            tableValues = values;
         }
-        tableValues = values;
     }
 
     public void updateTable(LinkedList<Person> persons) {
@@ -57,6 +67,7 @@ public class PersonTab {
         configTableStyle();
         configTableFilter();
         listennerSelectedRow();
+        createComboBoxInTable();
     }
 
     /**
@@ -66,6 +77,7 @@ public class PersonTab {
         style = new TableStyle(null, null, null);
         table.setDefaultRenderer(Integer.class, style);
         table.setDefaultRenderer(String.class, style);
+        table.setDefaultRenderer(Date.class, style);
     }
 
     /**
@@ -127,5 +139,16 @@ public class PersonTab {
      */
     public TableFilterHeader getTableFilter() {
         return filter;
+    }
+
+    /**
+     * Getter.
+     *
+     * @return lista de objetos que s~rão listado na comboBox.
+     */
+    private void createComboBoxInTable() {
+        TableColumn dateValue = table.getColumnModel().getColumn(2);
+        DatePicker datePicker = new DatePicker(new Date());
+        dateValue.setCellEditor(new CellEditorDatePicker(datePicker));
     }
 }

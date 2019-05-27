@@ -6,7 +6,7 @@ package d3c0de.date;
  * @version 1.0.0
  * @author Andre
  */
-public enum WeekDay {
+public enum Week {
     SUNDAY(new String [] {"Domingo", "Domingo", "DOM"}),
     MONDAY(new String [] {"Segunda", "Segunda-Feira", "SEG"}),
     TUESDAY(new String [] {"Terça", "Terça-Feira", "TER"}),
@@ -27,7 +27,7 @@ public enum WeekDay {
      */
     private String [] names;
     
-    private WeekDay(String [] names){
+    private Week(String [] names){
         this.names = names;
     }
 

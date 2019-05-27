@@ -1,12 +1,8 @@
 package d3c0de.date;
 
-import d3c0de.formatter.DateFormatter;
 import d3c0de.formatter.NumberFormatter;
 import d3c0de.validate.Validate;
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.Period;
-import java.util.GregorianCalendar;
 
 /**
  * Classe para controle e cálculos do horário.
@@ -16,7 +12,7 @@ import java.util.GregorianCalendar;
  * @author deCOde < decospdl@gmail.com>
  */
 public class Time {
-    
+
     public static int NOW_HOUR = LocalTime.now().getHour();
     public static int NOW_MINUTE = LocalTime.now().getMinute();
     public static int NOW_SECOND = LocalTime.now().getSecond();
@@ -63,7 +59,20 @@ public class Time {
      * @return o valor do horário do DTime.
      */
     public String getTime() {
-        return LocalTime.of(hour, minute, second).toString();
+        return NumberFormatter.lengthNumber(hour, 2) + ":" + NumberFormatter.lengthNumber(minute, 2)
+                + ":" + NumberFormatter.lengthNumber(second, 2);
+    }
+
+    /**
+     * O valor da data no format "HH:mm AM/PM".
+     *
+     * @return no formato string a data no formato específico.
+     */
+    public String getTimeAMPM() {
+        if (hour > 12) {
+            return NumberFormatter.lengthNumber(hour - 12, 2) + ":" + NumberFormatter.lengthNumber(minute, 2) + " PM";
+        }
+        return NumberFormatter.lengthNumber(hour, 2) + ":" + NumberFormatter.lengthNumber(minute, 2) + " AM";
     }
 
     /**
@@ -135,8 +144,7 @@ public class Time {
      * @return o valor em segundos.
      */
     public int convertSecond() {
-       LocalTime.of(hour, minute, second).toSecondOfDay();
-        return (hour * 3600) + (minute * 60) + second;
+        return LocalTime.of(hour, minute, second).toSecondOfDay();
     }
 
     /**
@@ -235,18 +243,6 @@ public class Time {
     public Time divide(int number) {
         int newTime = (int) (this.convertSecond() / number);
         return secondTo(newTime);
-    }
-
-    /**
-     * O valor da data no format "HH:mm AM/PM".
-     *
-     * @return no formato string a data no formato específico.
-     */
-    public String getTimeAMPM() {
-        if (hour > 12) {
-            return NumberFormatter.lengthNumber(hour - 12, 2) + ":" + getMinute() + " PM";
-        }
-        return getHour() + ":" + getMinute() + " AM";
     }
 
     /**

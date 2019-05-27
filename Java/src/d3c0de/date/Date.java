@@ -2,12 +2,10 @@ package d3c0de.date;
 
 import d3c0de.formatter.DateFormatter;
 import d3c0de.formatter.NumberFormatter;
-import d3c0de.validate.Validate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Year;
+import java.time.Month;
 import java.time.temporal.ChronoUnit;
-import java.util.GregorianCalendar;
 
 /**
  * Classe para controle de Data, horário, feriado.
@@ -18,9 +16,9 @@ import java.util.GregorianCalendar;
  */
 public class Date extends Time {
 
-    public static int NOW_DAY = DateFormatter.day(new GregorianCalendar(Calendar.TIME_ZONE, Calendar.LOCAL));
-    public static int NOW_MONTH = DateFormatter.month(new GregorianCalendar(Calendar.TIME_ZONE, Calendar.LOCAL));
-    public static int NOW_YEAR = DateFormatter.year(new GregorianCalendar(Calendar.TIME_ZONE, Calendar.LOCAL));
+    public static int NOW_DAY = LocalDate.now().getDayOfMonth();
+    public static int NOW_MONTH = LocalDate.now().getMonth().getValue();
+    public static int NOW_YEAR = LocalDate.now().getYear();
     private int day;
     private int month;
     private int year;
@@ -30,9 +28,9 @@ public class Date extends Time {
      */
     public Date() {
         super();
-        this.day = DateFormatter.day(new GregorianCalendar(Calendar.TIME_ZONE, Calendar.LOCAL));
-        this.month = DateFormatter.month(new GregorianCalendar(Calendar.TIME_ZONE, Calendar.LOCAL));
-        this.year = DateFormatter.year(new GregorianCalendar(Calendar.TIME_ZONE, Calendar.LOCAL));
+        this.day = LocalDate.now().getDayOfMonth();
+        this.month = LocalDate.now().getMonth().getValue();
+        this.year = LocalDate.now().getYear();
     }
 
     /**
@@ -55,11 +53,10 @@ public class Date extends Time {
      * @param date data no formato de string.
      * @return o objeto atualizado com o novo valor.
      */
-    public Time setDate(String date) {
-        Validate.date(date);
-        this.day = DateFormatter.day(date);
-        this.month = DateFormatter.month(date);
-        this.year = DateFormatter.year(date);
+    public Date setDate(String date) {
+        this.day = LocalDate.parse(date).getDayOfMonth();
+        this.month = LocalDate.parse(date).getMonth().getValue();
+        this.year = LocalDate.parse(date).getYear();
         return this;
     }
 
@@ -69,7 +66,8 @@ public class Date extends Time {
      * @return o valor do horário do DDate.
      */
     public String getDate() {
-        return getDay() + "/" + getMonth() + "/" + getYear();
+        return NumberFormatter.lengthNumber(day, 2) + "/" + NumberFormatter.lengthNumber(month, 2) 
+                +"/" + NumberFormatter.lengthNumber(year, 4);
     }
 
     /**
@@ -81,13 +79,22 @@ public class Date extends Time {
         return getDate() + "   " + getTime();
     }
 
+    public String getDbDate() {
+        return NumberFormatter.lengthNumber(year, 4) + "-" + NumberFormatter.lengthNumber(month, 2) 
+                +"-" + NumberFormatter.lengthNumber(day, 2);
+    }
+
+    public String getDbDateTime() {
+        return getDbDate() + " " + getTime();
+    }
+
     /**
      * Retorna o dia no formto "dd".
      *
      * @return o valor do dia.
      */
-    public String getDay() {
-        return NumberFormatter.lengthNumber(day, 2);
+    public int getDay() {
+        return day;
     }
 
     /**
@@ -95,8 +102,8 @@ public class Date extends Time {
      *
      * @return o valor do mês.
      */
-    public String getMonth() {
-        return NumberFormatter.lengthNumber(month, 2);
+    public int getMonth() {
+        return month;
     }
 
     /**
@@ -104,8 +111,8 @@ public class Date extends Time {
      *
      * @return o valor do ano.
      */
-    public String getYear() {
-        return NumberFormatter.lengthNumber(year, 4);
+    public int getYear() {
+        return year;
     }
 
     /**
@@ -115,7 +122,7 @@ public class Date extends Time {
      * @return o objeto atualizado.
      */
     public Date setDay(int day) {
-        Validate.date(NumberFormatter.lengthNumber(day, 2) + "/" + getMonth() + "/" + getYear());
+        LocalDate.of(year, Month.of(month), day);
         this.day = day;
         return this;
     }
@@ -127,7 +134,7 @@ public class Date extends Time {
      * @return o objeto atualizado.
      */
     public Date setMonth(int month) {
-        Validate.date(getDay() + "/" + NumberFormatter.lengthNumber(month, 2) + "/" + getYear());
+        LocalDate.of(year, Month.of(month), day);
         this.month = month;
         return this;
     }
@@ -139,7 +146,7 @@ public class Date extends Time {
      * @return o objeto atualizado.
      */
     public Date setYear(int year) {
-        Validate.date(getDay() + "/" + getMonth() + "/" + NumberFormatter.lengthNumber(year, 2));
+        LocalDate.of(year, Month.of(month), day);
         this.year = year;
         return this;
     }
@@ -151,211 +158,35 @@ public class Date extends Time {
      * @return o valor em segundos.
      */
     public Date addDay(int days) {
-        return DateFormatter.localDateTimeTo(LocalDateTime.of(year, month, day, Integer.parseInt(getHour()),
-                Integer.parseInt(getMinute()), Integer.parseInt(getSecond())).plusDays(days));
+        return DateFormatter.toDate(LocalDateTime.of(year, month, day,
+                getHour(), getMinute(), getSecond()).plusDays(days));
     }
 
     public long subDates(Date date) {
-        LocalDateTime thisDate = LocalDateTime.of(year, month, day, Integer.parseInt(getHour()),
-                Integer.parseInt(getMinute()), Integer.parseInt(getSecond()));
-        LocalDateTime otherDate = LocalDateTime.of(date.year, date.month, date.day, Integer.parseInt(date.getHour()),
-                Integer.parseInt(date.getMinute()), Integer.parseInt(date.getSecond()));
+        LocalDateTime thisDate = LocalDateTime.of(year, month, day,
+                getHour(), getMinute(), getSecond());
+        LocalDateTime otherDate = LocalDateTime.of(date.year, date.month, date.day,
+                date.getHour(), date.getMinute(), date.getSecond());
         return ChronoUnit.DAYS.between(thisDate, otherDate);
     }
 
     public boolean isBeforeOrEqual(Date date) {
-        LocalDateTime thisDate = LocalDateTime.of(year, month, day, Integer.parseInt(getHour()),
-                Integer.parseInt(getMinute()), Integer.parseInt(getSecond()));
-        LocalDateTime otherDate = LocalDateTime.of(date.year, date.month, date.day, Integer.parseInt(date.getHour()),
-                Integer.parseInt(date.getMinute()), Integer.parseInt(date.getSecond()));
+        LocalDateTime thisDate = LocalDateTime.of(year, month, day,
+                getHour(), getMinute(), getSecond());
+        LocalDateTime otherDate = LocalDateTime.of(date.year, date.month, date.day,
+                date.getHour(), date.getMinute(), date.getSecond());
         return thisDate.isBefore(otherDate) || thisDate.isEqual(otherDate);
     }
 
     public boolean isAfterOrEqual(Date date) {
-        LocalDateTime thisDate = LocalDateTime.of(year, month, day, Integer.parseInt(getHour()),
-                Integer.parseInt(getMinute()), Integer.parseInt(getSecond()));
-        LocalDateTime otherDate = LocalDateTime.of(date.year, date.month, date.day, Integer.parseInt(date.getHour()),
-                Integer.parseInt(date.getMinute()), Integer.parseInt(date.getSecond()));
+        LocalDateTime thisDate = LocalDateTime.of(year, month, day,
+                getHour(), getMinute(), getSecond());
+        LocalDateTime otherDate = LocalDateTime.of(date.year, date.month, date.day,
+                date.getHour(), date.getMinute(), date.getSecond());
         return thisDate.isAfter(otherDate) || thisDate.isEqual(otherDate);
     }
 
-    public void daysTo(Long days) {
-        int dayOfYear = 308;
-        Year y = Year.of(2018);
-        LocalDate ld = y.atDay(days.intValue());
-        System.out.println(ld);
+    public String getNameMonth(int typeName) {
+        return d3c0de.date.Month.getName(month, typeName);
     }
-
-//    /**
-//     * Converte a classe DTime em minutos.
-//     *
-//     * @return o valor em minutos.
-//     */
-//    public double convertMinute() {
-//        return (hour * 60) + minute + (((double) 1 / 60) * second);
-//    }
-//
-//    /**
-//     * Converte a classe DTime em hora.
-//     *
-//     * @return o valor em horas.
-//     */
-//    public double convertHour() {
-//        return hour + (((double) 1 / 60) * minute) + (((double) 1 / 3600) * second);
-//    }
-//
-//    /**
-//     * Transforma segundos em objeto DTime.
-//     *
-//     * @param second a quantidade segundos para criação do objeto.
-//     * @return o objeto comnforme os segundos passado por parametro.
-//     */
-//    public DTime secondTo(int second) {
-//        setHour(second / 3600);
-//        setMinute((second - (hour * 3600)) / 60);
-//        setSecond((second - (hour * 3600 + minute * 60)) / 1);
-//        return this;
-//    }
-//
-//    /**
-//     * Transforma minutos em objeto DTime.
-//     *
-//     * @param minute a quantidade minutos para criação do objeto.
-//     * @return o objeto comnforme os minutos passado por parametro.
-//     */
-//    public DTime minuteTo(int minute) {
-//        setHour(minute / 60);
-//        setMinute((minute - (hour * 60)) / 1);
-//        return this;
-//    }
-//
-//    /**
-//     * Transforma horas em objeto DTime.
-//     *
-//     * @param hour a quantidade horas para criação do objeto.
-//     * @return o objeto comnforme os horas passado por parametro.
-//     */
-//    public DTime hourTo(int hour) {
-//        setHour(hour);
-//        return this;
-//    }
-//
-//    /**
-//     * Soma dos objetos da classe DTime.
-//     *
-//     * @param time objeto DTime que será somado.
-//     * @return o DTime atualizado com a soma dos dois objetos.
-//     */
-//    public DTime sum(DTime time) {
-//        int newTime = time.convertSecond() + this.convertSecond();
-//        return secondTo(newTime);
-//    }
-//
-//    /**
-//     * Subtrai dos objetos da classe DTime.
-//     *
-//     * @param time objeto DTime que será subtraido.
-//     * @return o DTime atualizado com a subtração dos dois objetos.
-//     */
-//    public DTime subtract(DTime time) {
-//        int newTime = time.convertSecond() - this.convertSecond();
-//        return secondTo(newTime);
-//    }
-//
-//    /**
-//     * Multiplicação do objeto da classe DTime com um valor double.
-//     *
-//     * @param number objeto DTime que será multiplicado.
-//     * @return o DTime atualizado com a multiplicação do objeto com o double.
-//     */
-//    public DTime multiply(double number) {
-//        int newTime = (int) (this.convertSecond() * number);
-//        return secondTo(newTime);
-//    }
-//
-//    /**
-//     * Divisão do objeto da classe DTime com um valor double.
-//     *
-//     * @param number objeto DTime que será dividido.
-//     * @return o DTime atualizado com a divisão do objeto com o double.
-//     */
-//    public DTime divide(int number) {
-//        int newTime = (int) (this.convertSecond() / number);
-//        return secondTo(newTime);
-//    }
-//
-//    /**
-//     * O valor da data no format "HH:mm AM/PM".
-//     *
-//     * @return no formato string a data no formato específico.
-//     */
-//    public String getTimeAMPM() {
-//        if (hour > 12) {
-//            return Formatador.lengthNumber(hour - 12, 2) + ":" + minute() + " PM";
-//        }
-//        return hour() + ":" + minute() + " AM";
-//    }
-//
-//    /**
-//     * Verifica se o objeto chamador é menor que o passodo por parâmetro.
-//     *
-//     * @param time o objeto DTime que será comparado.
-//     * @return true caso seja menor.
-//     */
-//    public boolean isLessThan(DTime time) {
-//        return this.convertSecond() < time.convertSecond();
-//    }
-//
-//    /**
-//     * Verifica se o objeto chamador é maior que o passodo por parâmetro.
-//     *
-//     * @param time o objeto DTime que será comparado.
-//     * @return true = caso seja maior.
-//     */
-//    public boolean isMoreThan(DTime time) {
-//        return this.convertSecond() > time.convertSecond();
-//    }
-//
-//    /**
-//     * Verifica se o objeto chamador é igual que o passodo por parâmetro.
-//     *
-//     * @param time o objeto DTime que será comparado.
-//     * @return true = caso seja iguais.
-//     */
-//    public boolean isEqualThan(DTime time) {
-//        return this.convertSecond() == time.convertSecond();
-//    }
-//
-//    /**
-//     * Adiciona a quantidade de segundos no valor existente no objeto DTime.
-//     *
-//     * @param second a quantidade de segundos adicionado.
-//     * @return o objeto DTime atualizado.
-//     */
-//    public DTime addSecond(int second) {
-//        int newTime = this.convertSecond() + second;
-//        return secondTo(newTime);
-//    }
-//
-//    /**
-//     * Adiciona a quantidade de minutos no valor existente no objeto DTime.
-//     *
-//     * @param minute a quantidade de minutos adicionado.
-//     * @return o objeto DTime atualizado.
-//     */
-//    public DTime addMinute(int minute) {
-//        int newTime = this.convertSecond() + minuteTo(minute).convertSecond();
-//        return secondTo(newTime);
-//    }
-//
-//    /**
-//     * Adiciona a quantidade de horas no valor existente no objeto DTime.
-//     *
-//     * @param hour a quantidade de horas adicionado.
-//     * @return o objeto DTime atualizado.
-//     */
-//    public DTime addHour(int hour) {
-//        int newTime = this.convertSecond() + hourTo(hour).convertSecond();
-//        return secondTo(newTime);
-//    }
 }

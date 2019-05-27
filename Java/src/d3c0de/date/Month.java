@@ -4,7 +4,7 @@ package d3c0de.date;
  *
  * @author Andre
  */
-public enum MonthYear {
+public enum Month {
     JANUARY(new String[]{"Janeiro", "JAN"}),
     FREBRUARY(new String[]{"Fevereiro", "FEV"}),
     MARCH(new String[]{"Março", "MAR"}),
@@ -29,17 +29,18 @@ public enum MonthYear {
      */
     private String[] names;
 
-    private MonthYear(String[] names) {
+    private Month(String[] names) {
         this.names = names;
     }
 
     /**
      * Retorna o nome do mês conforme o index fornecido.
      *
+     * @param month
      * @param tipName o index do tipo do nome.
      * @return o nome conforme o index selecionado.
      */
-    public String getName(int tipName) {
-        return names[tipName];
+    public static String getName(int month,int tipName) {
+        return Month.values()[month - 1].names[tipName];
     }
 }
