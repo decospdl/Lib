@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package d3c0de.mockup;
+package test;
 
+import siet.ImportaServico;
 import d3c0de.file.Log;
 import d3c0de.formatter.StringFormatter;
 

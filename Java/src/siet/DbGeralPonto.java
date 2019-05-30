@@ -1,4 +1,4 @@
-package d3c0de.mockup;
+package siet;
 
 import d3c0de.database.ConfigMySql;
 import d3c0de.database.ConnectionMySql;
@@ -11,17 +11,18 @@ import java.util.logging.Logger;
  *
  * @author Andre
  */
-public class DbEscTipoServico {
+public class DbGeralPonto {
 
-    private static final String TABLE_NAME = "db_mun.esc_tipo_servico";
-    private static final String ID = "id_tipo_servico";
-    private static final String DESCRICAO = "descricao";
-    private static final String APELIDO = "apelido";
+    public static final String TABLE_NAME = "db_mun.geral_ponto";
+    public static final String ID = "id";
+    public static final String DESCRICAO = "descricao";
+    public static final String LOCAL_SAIDA = "local_saida";
 
-    public static boolean tipoExiste(String apelido) {
+    public static boolean pontoExiste(String sentido) {
         boolean existe = false;
         try {
-            String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + APELIDO + " = '" + apelido + "'";
+            String query = "SELECT * FROM " + TABLE_NAME + " WHERE LOWER("
+                    + DESCRICAO + ") = LOWER('" + sentido + "')";
             ResultSet rs = ConnectionMySql.selectFromDb(ConfigMySql.DB_MUN, query);
             if (rs.next()) {
                 existe = true;
@@ -30,14 +31,15 @@ public class DbEscTipoServico {
             Logger.getLogger(DbEscEscala.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             ConnectionMySql.closeConnection();
-        }  
+        }
         return existe;
     }
 
-    public static String getIdByApelido(String apelido) {
+    public static String getIdByDescricao(String descricao) {
         String id = null;
         try {
-            String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + APELIDO + " = '" + apelido + "'";
+            String query = "SELECT "+ ID +" FROM " + TABLE_NAME + " WHERE LOWER("
+                    + DESCRICAO + ") = LOWER('" + descricao + "')";
             ResultSet rs = ConnectionMySql.selectFromDb(ConfigMySql.DB_MUN, query);
             if (rs.next()) {
                 id = rs.getString(ID);
@@ -45,7 +47,7 @@ public class DbEscTipoServico {
         } catch (SQLException ex) {
             Logger.getLogger(DbEscEscala.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            ConnectionMySql.closeConnection();          
+            ConnectionMySql.closeConnection();
         }
         return id;
     }

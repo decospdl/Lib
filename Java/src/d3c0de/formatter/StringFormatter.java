@@ -51,14 +51,6 @@ public abstract class StringFormatter {
         return line;
     }
 
-    public static String createLine(String[] values) {
-        String line = "";
-        for (String value : values) {
-            line += createLine(value.length());
-        }
-        return line;
-    }
-
     public static String createTable(String[][] values, int length, int padTo) {
         String aux = "", table = "";
         for (String[] list : values) {

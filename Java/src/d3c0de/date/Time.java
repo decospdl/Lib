@@ -49,7 +49,6 @@ public class Time {
      * @return o objeto atualizado com o novo valor.
      */
     public Time setTime(String time) throws Exception {
-        time = DateFormatter.adjustLenghtTime(time);
         this.hour = LocalTime.parse(time, DateTimeFormatter.ISO_TIME).getHour();
         this.minute = LocalTime.parse(time).getMinute();
         this.second = LocalTime.parse(time).getSecond();

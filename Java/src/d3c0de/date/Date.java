@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
 
 /**
  * Classe para controle de Data, horário, feriado.
@@ -226,30 +225,5 @@ public class Date extends Time {
     public String getWeekDay(int typeName) {
         LocalDateTime date = DateFormatter.toLocalDateTime(this);
         return Week.getName(date.getDayOfWeek().getValue(), typeName);
-    }
-
-    public static HashMap<Integer, Integer[]> getTableGoldNumber() {
-        HashMap<Integer, Integer[]> goldNumber = new HashMap<>();
-        goldNumber.put(1, new Integer[]{14, 4});
-        goldNumber.put(2, new Integer[]{3, 4});
-        goldNumber.put(3, new Integer[]{23, 3});
-        goldNumber.put(4, new Integer[]{11, 4});
-        goldNumber.put(5, new Integer[]{31, 3});
-        goldNumber.put(6, new Integer[]{18, 4});
-        goldNumber.put(7, new Integer[]{8, 4});
-        goldNumber.put(8, new Integer[]{28, 3});
-        goldNumber.put(9, new Integer[]{16, 4});
-        goldNumber.put(10, new Integer[]{5, 4});
-        goldNumber.put(11, new Integer[]{25, 3});
-        goldNumber.put(12, new Integer[]{13, 4});
-        goldNumber.put(13, new Integer[]{2, 4});
-        goldNumber.put(14, new Integer[]{22, 3});
-        goldNumber.put(15, new Integer[]{10, 4});
-        goldNumber.put(16, new Integer[]{30, 3});
-        goldNumber.put(17, new Integer[]{17, 4});
-        goldNumber.put(18, new Integer[]{7, 4});
-        goldNumber.put(19, new Integer[]{27, 3});
-
-        return goldNumber;
     }
 }

@@ -1,4 +1,4 @@
-package d3c0de.mockup;
+package siet;
 
 import d3c0de.database.ConfigMySql;
 import d3c0de.database.ConnectionMySql;
@@ -11,18 +11,16 @@ import java.util.logging.Logger;
  *
  * @author Andre
  */
-public class DbGeralPonto {
+public class DbGeralLinha {
 
-    public static final String TABLE_NAME = "db_mun.geral_ponto";
+    public static final String TABLE_NAME = "db_mun.geral_linha";
     public static final String ID = "id";
-    public static final String DESCRICAO = "descricao";
-    public static final String LOCAL_SAIDA = "local_saida";
+    public static final String LINHA = "id_oficial";
 
-    public static boolean pontoExiste(String sentido) {
+    public static boolean linhaExiste(String linha) {
         boolean existe = false;
         try {
-            String query = "SELECT * FROM " + TABLE_NAME + " WHERE LOWER("
-                    + DESCRICAO + ") = LOWER('" + sentido + "')";
+            String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + LINHA + " = '" + linha + "'";
             ResultSet rs = ConnectionMySql.selectFromDb(ConfigMySql.DB_MUN, query);
             if (rs.next()) {
                 existe = true;
@@ -35,11 +33,10 @@ public class DbGeralPonto {
         return existe;
     }
 
-    public static String getIdByDescricao(String descricao) {
+    public static String getIdByLinha(String linha) {
         String id = null;
         try {
-            String query = "SELECT "+ ID +" FROM " + TABLE_NAME + " WHERE LOWER("
-                    + DESCRICAO + ") = LOWER('" + descricao + "')";
+            String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + LINHA + " = '" + linha + "'";
             ResultSet rs = ConnectionMySql.selectFromDb(ConfigMySql.DB_MUN, query);
             if (rs.next()) {
                 id = rs.getString(ID);

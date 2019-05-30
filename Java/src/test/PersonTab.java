@@ -1,4 +1,4 @@
-package d3c0de.mockup;
+package test;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
 import d3c0de.swing.component.TableStyle;

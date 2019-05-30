@@ -1,4 +1,4 @@
-package d3c0de.mockup;
+package test;
 
 import java.util.Date;
 

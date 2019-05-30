@@ -1,4 +1,4 @@
-package d3c0de.mockup;
+package siet;
 
 import d3c0de.date.Date;
 import d3c0de.date.Time;
@@ -51,7 +51,7 @@ public class ImportaServico {
 
     private void selecionaArquivo() {
         String caminhoArquivo = File.getPathFile();
-        listaImportado = File.getImport(',', caminhoArquivo);
+        listaImportado = File.getImportTable(',', caminhoArquivo);
     }
 
     public void validaImportacao() {

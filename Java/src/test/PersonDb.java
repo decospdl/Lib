@@ -1,4 +1,4 @@
-package d3c0de.mockup;
+package test;
 
 import d3c0de.database.ConfigMySql;
 import d3c0de.database.ConnectionMySql;

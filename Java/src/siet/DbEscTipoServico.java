@@ -1,4 +1,4 @@
-package d3c0de.mockup;
+package siet;
 
 import d3c0de.database.ConfigMySql;
 import d3c0de.database.ConnectionMySql;
@@ -11,16 +11,17 @@ import java.util.logging.Logger;
  *
  * @author Andre
  */
-public class DbGeralLinha {
+public class DbEscTipoServico {
 
-    public static final String TABLE_NAME = "db_mun.geral_linha";
-    public static final String ID = "id";
-    public static final String LINHA = "id_oficial";
+    private static final String TABLE_NAME = "db_mun.esc_tipo_servico";
+    private static final String ID = "id_tipo_servico";
+    private static final String DESCRICAO = "descricao";
+    private static final String APELIDO = "apelido";
 
-    public static boolean linhaExiste(String linha) {
+    public static boolean tipoExiste(String apelido) {
         boolean existe = false;
         try {
-            String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + LINHA + " = '" + linha + "'";
+            String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + APELIDO + " = '" + apelido + "'";
             ResultSet rs = ConnectionMySql.selectFromDb(ConfigMySql.DB_MUN, query);
             if (rs.next()) {
                 existe = true;
@@ -29,14 +30,14 @@ public class DbGeralLinha {
             Logger.getLogger(DbEscEscala.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             ConnectionMySql.closeConnection();
-        }
+        }  
         return existe;
     }
 
-    public static String getIdByLinha(String linha) {
+    public static String getIdByApelido(String apelido) {
         String id = null;
         try {
-            String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + LINHA + " = '" + linha + "'";
+            String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + APELIDO + " = '" + apelido + "'";
             ResultSet rs = ConnectionMySql.selectFromDb(ConfigMySql.DB_MUN, query);
             if (rs.next()) {
                 id = rs.getString(ID);
@@ -44,7 +45,7 @@ public class DbGeralLinha {
         } catch (SQLException ex) {
             Logger.getLogger(DbEscEscala.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            ConnectionMySql.closeConnection();
+            ConnectionMySql.closeConnection();          
         }
         return id;
     }
