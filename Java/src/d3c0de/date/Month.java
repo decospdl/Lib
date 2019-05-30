@@ -1,8 +1,8 @@
 package d3c0de.date;
 
 /**
- *
- * @author Andre
+ * Enum com o nome de todos os meses na lingua portugesa.
+ * @author d3c0de <decospdl@gmail.com>
  */
 public enum Month {
     JANUARY(new String[]{"Janeiro", "JAN"}),

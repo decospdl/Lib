@@ -1,18 +1,18 @@
 package d3c0de.date;
 
 import d3c0de.formatter.DateFormatter;
-import d3c0de.formatter.NumberFormatter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 
 /**
  * Classe para controle de Data, horário, feriado.
  *
  * @see DHoliday, DTime, DCalendar, DWeekDay.
  * @version 1.0.0
- * @author Andre
+ * @author d3c0de <decospdl@gmail.com>
  */
 public class Date extends Time {
 
@@ -40,14 +40,15 @@ public class Date extends Time {
      *
      * @param date data no formato "DD/MM/YYYY".
      * @param time hora no formato "HH:mm:ss".
+     * @throws java.lang.Exception
      */
-    public Date(String date, String time) {
+    public Date(String date, String time) throws Exception {
         super(time);
         setDate(date);
     }
 
     /**
-     * Defini uma nova data. Devendo ter o formato "dd/MM/YYYY", caso inválido
+     * Defini uma nova data. Devendo ter o formato "YYYY-MM-DD", caso inválido
      * irá conflitar com o parsing.
      *
      * @param date data no formato de string.
@@ -66,8 +67,7 @@ public class Date extends Time {
      * @return o valor do horário do DDate.
      */
     public String getDate() {
-        return NumberFormatter.lengthNumber(day, 2) + "/" + NumberFormatter.lengthNumber(month, 2) 
-                +"/" + NumberFormatter.lengthNumber(year, 4);
+        return String.format("%1$02d/%2$02d/%3$04d", day, month, year);
     }
 
     /**
@@ -76,16 +76,25 @@ public class Date extends Time {
      * @return o valor do horário do DDate.
      */
     public String getDateTime() {
-        return getDate() + "   " + getTime();
+        return getDate() + " " + getTime(false);
     }
 
+    /**
+     * A data no formato para o banco de dados YYYY-MM-DD
+     *
+     * @return a data para DB
+     */
     public String getDbDate() {
-        return NumberFormatter.lengthNumber(year, 4) + "-" + NumberFormatter.lengthNumber(month, 2) 
-                +"-" + NumberFormatter.lengthNumber(day, 2);
+        return String.format("%1$04d-%2$02d-%3$02d", year, month, day);
     }
 
+    /**
+     * A data no formato para o banco de dados YYYY-MM-DD HH:mm:ss
+     *
+     * @return a data para DB
+     */
     public String getDbDateTime() {
-        return getDbDate() + " " + getTime();
+        return getDbDate() + " " + getTime(true);
     }
 
     /**
@@ -162,31 +171,85 @@ public class Date extends Time {
                 getHour(), getMinute(), getSecond()).plusDays(days));
     }
 
+    /**
+     * Subtrai duas datas retornando a quantidade de dias de diferença entre.
+     *
+     * @param date a data que será compara para o cálculo.
+     * @return a quantidade de dias de diferença entre
+     */
     public long subDates(Date date) {
-        LocalDateTime thisDate = LocalDateTime.of(year, month, day,
-                getHour(), getMinute(), getSecond());
-        LocalDateTime otherDate = LocalDateTime.of(date.year, date.month, date.day,
-                date.getHour(), date.getMinute(), date.getSecond());
+        LocalDateTime thisDate = DateFormatter.toLocalDateTime(this);
+        LocalDateTime otherDate = DateFormatter.toLocalDateTime(date);
         return ChronoUnit.DAYS.between(thisDate, otherDate);
     }
 
+    /**
+     * Verifica se a data é igual ou antes da data que chama a função.
+     *
+     * @param date da que será comparada.
+     * @return true - se é menor ou igual | false = se é maior.
+     */
     public boolean isBeforeOrEqual(Date date) {
-        LocalDateTime thisDate = LocalDateTime.of(year, month, day,
-                getHour(), getMinute(), getSecond());
-        LocalDateTime otherDate = LocalDateTime.of(date.year, date.month, date.day,
-                date.getHour(), date.getMinute(), date.getSecond());
+        LocalDateTime thisDate = DateFormatter.toLocalDateTime(this);
+        LocalDateTime otherDate = DateFormatter.toLocalDateTime(date);
         return thisDate.isBefore(otherDate) || thisDate.isEqual(otherDate);
     }
 
+    /**
+     * Verifica se a data é depois da data que chama a função.
+     *
+     * @param date que será comparada.
+     * @return true - se é depois | false = se é antes ou igual.
+     */
     public boolean isAfterOrEqual(Date date) {
-        LocalDateTime thisDate = LocalDateTime.of(year, month, day,
-                getHour(), getMinute(), getSecond());
-        LocalDateTime otherDate = LocalDateTime.of(date.year, date.month, date.day,
-                date.getHour(), date.getMinute(), date.getSecond());
+        LocalDateTime thisDate = DateFormatter.toLocalDateTime(this);
+        LocalDateTime otherDate = DateFormatter.toLocalDateTime(date);
         return thisDate.isAfter(otherDate) || thisDate.isEqual(otherDate);
     }
 
+    /**
+     * O nome específico do mês.
+     *
+     * @param typeName se é extemso ou abreviado;
+     * @return a descrição do mês.
+     */
     public String getNameMonth(int typeName) {
         return d3c0de.date.Month.getName(month, typeName);
+    }
+
+    /**
+     * O nome específico do mês.
+     *
+     * @param typeName se é extemso ou abreviado;
+     * @return a descrição do mês.
+     */
+    public String getWeekDay(int typeName) {
+        LocalDateTime date = DateFormatter.toLocalDateTime(this);
+        return Week.getName(date.getDayOfWeek().getValue(), typeName);
+    }
+
+    public static HashMap<Integer, Integer[]> getTableGoldNumber() {
+        HashMap<Integer, Integer[]> goldNumber = new HashMap<>();
+        goldNumber.put(1, new Integer[]{14, 4});
+        goldNumber.put(2, new Integer[]{3, 4});
+        goldNumber.put(3, new Integer[]{23, 3});
+        goldNumber.put(4, new Integer[]{11, 4});
+        goldNumber.put(5, new Integer[]{31, 3});
+        goldNumber.put(6, new Integer[]{18, 4});
+        goldNumber.put(7, new Integer[]{8, 4});
+        goldNumber.put(8, new Integer[]{28, 3});
+        goldNumber.put(9, new Integer[]{16, 4});
+        goldNumber.put(10, new Integer[]{5, 4});
+        goldNumber.put(11, new Integer[]{25, 3});
+        goldNumber.put(12, new Integer[]{13, 4});
+        goldNumber.put(13, new Integer[]{2, 4});
+        goldNumber.put(14, new Integer[]{22, 3});
+        goldNumber.put(15, new Integer[]{10, 4});
+        goldNumber.put(16, new Integer[]{30, 3});
+        goldNumber.put(17, new Integer[]{17, 4});
+        goldNumber.put(18, new Integer[]{7, 4});
+        goldNumber.put(19, new Integer[]{27, 3});
+
+        return goldNumber;
     }
 }

@@ -1,8 +1,10 @@
 package d3c0de.date;
 
+import d3c0de.formatter.DateFormatter;
 import d3c0de.formatter.NumberFormatter;
 import d3c0de.validate.Validate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Classe para controle e cálculos do horário.
@@ -35,7 +37,7 @@ public class Time {
      *
      * @param time tempo no formato de string.
      */
-    public Time(String time) {
+    public Time(String time) throws Exception {
         setTime(time);
     }
 
@@ -46,8 +48,9 @@ public class Time {
      * @param time tempo no formato de string.
      * @return o objeto atualizado com o novo valor.
      */
-    public Time setTime(String time) {
-        this.hour = LocalTime.parse(time).getHour();
+    public Time setTime(String time) throws Exception {
+        time = DateFormatter.adjustLenghtTime(time);
+        this.hour = LocalTime.parse(time, DateTimeFormatter.ISO_TIME).getHour();
         this.minute = LocalTime.parse(time).getMinute();
         this.second = LocalTime.parse(time).getSecond();
         return this;
@@ -56,23 +59,31 @@ public class Time {
     /**
      * Retorna o horário no formato "HH:mm".
      *
+     * @param seconds true - mostra os segundos / false - esconde os segundos
      * @return o valor do horário do DTime.
      */
-    public String getTime() {
-        return NumberFormatter.lengthNumber(hour, 2) + ":" + NumberFormatter.lengthNumber(minute, 2)
-                + ":" + NumberFormatter.lengthNumber(second, 2);
+    public String getTime(boolean seconds) {
+        LocalTime time = LocalTime.of(hour, minute, second);
+        if (seconds) {
+            return String.format("%1$tH:%1$tM:%1$tS", time);
+        } else {
+            return String.format("%1$tH:%1$tM", time);
+        }
     }
 
     /**
      * O valor da data no format "HH:mm AM/PM".
      *
+     * @param seconds true - mostra os segundos / false - esconde os segundos
      * @return no formato string a data no formato específico.
      */
-    public String getTimeAMPM() {
-        if (hour > 12) {
-            return NumberFormatter.lengthNumber(hour - 12, 2) + ":" + NumberFormatter.lengthNumber(minute, 2) + " PM";
+    public String getTimeAMPM(boolean seconds) {
+        LocalTime time = LocalTime.of(hour, minute, second);
+        if (seconds) {
+            return String.format("%1$tI:%1$tM:%1$tS %1$tp", time);
+        } else {
+            return String.format("%1$tI:%1$tM %1$tp", time);
         }
-        return NumberFormatter.lengthNumber(hour, 2) + ":" + NumberFormatter.lengthNumber(minute, 2) + " AM";
     }
 
     /**

@@ -6,6 +6,7 @@
 package d3c0de.mockup;
 
 import d3c0de.file.Log;
+import d3c0de.formatter.StringFormatter;
 
 
 /**
@@ -13,7 +14,7 @@ import d3c0de.file.Log;
  * @author Andre
  */
 public class Gui extends javax.swing.JFrame {
-
+    private Log log;
     /**
      * Creates new form Gui
      */
@@ -86,13 +87,14 @@ public class Gui extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Log log = new Log(jTextPane1);
-        ImportaServico is = new ImportaServico(log);
+        log = new Log(jTextPane1);
+        ImportaServico is = new ImportaServico(log, true);
         is.validaImportacao();
+        is.importaArquivo();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
+        log = new Log(jTextPane1);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

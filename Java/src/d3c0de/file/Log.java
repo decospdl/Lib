@@ -15,24 +15,30 @@ public class Log {
 
     private JTextPane textPane;
 
+    public JTextPane getTextPane() {
+        return textPane;
+    }
+
     public Log(JTextPane textPane) {
         this.textPane = textPane;
     }
 
-    public void erroStyle(String msg) {
+    public void erroMessage(String msg) {
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.RED);
+        aset = sc.addAttribute(aset, StyleConstants.Background, Color.WITHE);
+        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
         aset = sc.addAttribute(aset, StyleConstants.Bold, true);
         aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Tahoma");
-        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
         textPane.setCaretPosition(textPane.getDocument().getLength());
         textPane.setCharacterAttributes(aset, false);
         textPane.replaceSelection(msg);
     }
 
-    public void sucessStyle(String msg) {
+    public void sucessMessage(String msg) {
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.GREEN);
+        aset = sc.addAttribute(aset, StyleConstants.Background, Color.WITHE);
         aset = sc.addAttribute(aset, StyleConstants.Bold, true);
         aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Tahoma");
         aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
@@ -41,9 +47,10 @@ public class Log {
         textPane.replaceSelection(msg);
     }
 
-    public void normalStyle(String msg) {
+    public void normalMessage(String msg) {
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.BLACK);
+        aset = sc.addAttribute(aset, StyleConstants.Background, Color.WITHE);
         aset = sc.addAttribute(aset, StyleConstants.Bold, false);
         aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Tahoma");
         aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
@@ -51,10 +58,11 @@ public class Log {
         textPane.setCharacterAttributes(aset, false);
         textPane.replaceSelection(msg);
     }
-    
-        public void titleStyle(String msg) {
+
+    public void titleMessage(String msg) {
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.BLACK);
+        aset = sc.addAttribute(aset, StyleConstants.Background, Color.WITHE);
         aset = sc.addAttribute(aset, StyleConstants.Bold, true);
         aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Tahoma");
         aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
@@ -63,9 +71,22 @@ public class Log {
         textPane.replaceSelection(msg);
     }
 
-    public void infoStyle(String msg) {
+    public void infoMessage(String msg) {
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.GRAY);
+        aset = sc.addAttribute(aset, StyleConstants.Background, Color.WITHE);
+        aset = sc.addAttribute(aset, StyleConstants.Bold, false);
+        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Tahoma");
+        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+        textPane.setCaretPosition(textPane.getDocument().getLength());
+        textPane.setCharacterAttributes(aset, false);
+        textPane.replaceSelection(msg);
+    }
+
+    public void highlightMessage(String msg) {
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.BLUE);
+        aset = sc.addAttribute(aset, StyleConstants.Background, Color.WITHE);
         aset = sc.addAttribute(aset, StyleConstants.Bold, false);
         aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Tahoma");
         aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);

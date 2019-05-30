@@ -1,14 +1,11 @@
 package d3c0de.mockup;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
+import d3c0de.swing.component.TableStyle;
 import d3c0de.swing.table.CellEditorDatePicker;
-import swing.component.TableStyle;
 import d3c0de.swing.table.TableModel;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.LinkedList;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;

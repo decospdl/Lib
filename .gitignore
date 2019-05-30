@@ -1,5 +1,4 @@
-
 #Class Private#
-ConfigMySql*
+config.ini
 /Java/dist/
 /Java/build/
