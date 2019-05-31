@@ -85,5 +85,13 @@ public abstract class File {
         }
         return null;
     }
+    
+    public static boolean existFile(String pathFile){
+        try (BufferedReader br = new BufferedReader(new FileReader(pathFile))) {
+            return true;
+        }catch (IOException ex) {
+            return false;
+        }
+    }
 
 }

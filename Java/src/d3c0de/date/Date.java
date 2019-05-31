@@ -54,10 +54,16 @@ public class Date extends Time {
      * @return o objeto atualizado com o novo valor.
      */
     public Date setDate(String date) {
-        this.day = LocalDate.parse(date).getDayOfMonth();
-        this.month = LocalDate.parse(date).getMonth().getValue();
-        this.year = LocalDate.parse(date).getYear();
-        return this;
+        if (date != null) {
+            if(date.length() > 10){
+                date = date.substring(0, date.indexOf(" "));
+            }
+            this.day = LocalDate.parse(date).getDayOfMonth();
+            this.month = LocalDate.parse(date).getMonth().getValue();
+            this.year = LocalDate.parse(date).getYear();
+            return this;
+        }
+        return null;
     }
 
     /**

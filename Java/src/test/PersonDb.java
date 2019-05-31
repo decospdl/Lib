@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  */
 public abstract class PersonDb {
     
-    private static final String SCHEMA = "mydb.person";
+    private static final String SCHEMA = "uniforme.people";
     private static final String ID = "id";
     private static final String NAME = "name";
     private static final String AGE = "age";

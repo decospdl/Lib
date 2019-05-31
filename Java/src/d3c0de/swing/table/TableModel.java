@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.FontMetrics;
 import java.util.LinkedList;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
@@ -31,26 +33,17 @@ public class TableModel extends AbstractTableModel implements TableModelListener
     private int rowCount;
     private Object[][] tableValue;
     private Class[] columnClasses;
-
+    private ListSelectionListener lss;
+    private String selectedRow;
+   
     /**
-     * Contrutor
-     *
-     * @param table classe JTable.
-     * @param tableValue
+     * Atualiza os dados da tabela.
      */
-    public TableModel(JTable table, Object[][] tableValue) {
-        this.table = table;
-        this.tableValue = tableValue;
-    }
-
-    /**
-     * Atualiza todas as configurações.
-     */
-    public void start() {
-        table.setModel(this);
+    public void configTable() {
+        this.table.setModel(this);
         autoSizeColumn();
         this.addTableModelListener(this);
-        table.setAutoCreateRowSorter(true);
+        this.table.setAutoCreateRowSorter(true);
     }
 
     /**
@@ -313,6 +306,24 @@ public class TableModel extends AbstractTableModel implements TableModelListener
     }
 
     /**
+     * Inicia o listener para identificadação de qual célula esta sendo
+     * selecionada.
+     */
+    public void listennerSelectedRow() {
+        table.getSelectionModel().removeListSelectionListener(lss);
+        lss = (ListSelectionEvent e) -> {
+            if (table.getSelectedRow() < tableValue.length && table.getSelectedRow() >= 0) {
+                selectedRow = table.getValueAt(table.getSelectedRow(), 0).toString();
+            }
+        };
+        table.getSelectionModel().addListSelectionListener(lss);
+    }
+
+    public void setTable(JTable table) {
+        this.table = table;
+    }
+    
+    /**
      * Setter.
      *
      * @param nameColumns lista com os nomes da coluna.
@@ -367,5 +378,9 @@ public class TableModel extends AbstractTableModel implements TableModelListener
      */
     public void setClassColumn(Class[] columnClasses) {
         this.columnClasses = columnClasses;
+    }
+    
+    public String getSelectedRow(){
+        return selectedRow;
     }
 }

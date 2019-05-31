@@ -1,6 +1,12 @@
 package test;
 
-import d3c0de.date.Time;
+import d3c0de.date.Date;
+import d3c0de.file.File;
+import d3c0de.formatter.DateFormatter;
+import java.text.DateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
 
 /**
  * Classe para teste da lib.
@@ -11,9 +17,7 @@ import d3c0de.date.Time;
 public class Test {
 
     public static void main(String[] args) throws Exception {
-//        Gui gui = new Gui();
-//        gui.setVisible(true);
-        Time time = new Time("21:01:69");
-        System.out.println(time.getTime(true));
+        Gui gui = new Gui();
+        gui.setVisible(true);         
     }
 }

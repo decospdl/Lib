@@ -3,34 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/mockup/Test.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/file/File.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/file/image/Logo.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/date/Calendar.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/date/WeekDay.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/formatter/NumberFormatter.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/database/ConnectionMySql.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/swing/listenner/ValidateTextField.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/mockup/Gui.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/swing/table/CellEditorFormattedText.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/date/MonthYear.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/formatter/RegexValidate.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/mockup/Person.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/swing/listenner/EmptyListener.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/date/Date.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/reports/Reports.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/database/ConfigMySql.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/database/Query.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/date/Time.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/formatter/DbFormatter.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/formatter/DateFormatter.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/mockup/PersonDb.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/validate/Validate.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/mockup/PersonTab.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/swing/component/ButtonStyle.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/swing/table/TableModel.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/date/Holiday.java</file>
-            <file>file:/F:/Codes/Lib/Java/src/d3c0de/formatter/RegexInput.java</file>
+            <file>file:/C:/Users/Andre/Documents/Codes/Lib/Java/src/d3c0de/swing/table/TableModel.java</file>
+            <file>file:/C:/Users/Andre/Documents/Codes/Lib/Java/src/test/PersonTab.java</file>
+            <file>file:/C:/Users/Andre/Documents/Codes/Lib/Java/src/test/Test.java</file>
+            <file>file:/C:/Users/Andre/Documents/Codes/Lib/Java/src/d3c0de/formatter/DateFormatter.java</file>
+            <file>file:/C:/Users/Andre/Documents/Codes/Lib/Java/src/test/Gui.java</file>
+            <file>file:/C:/Users/Andre/Documents/Codes/Lib/Java/src/test/Person.java</file>
+            <file>file:/C:/Users/Andre/Documents/Codes/Lib/Java/src/test/PersonDb.java</file>
+            <file>file:/C:/Users/Andre/Documents/Codes/Lib/Java/src/d3c0de/date/Date.java</file>
         </group>
     </open-files>
 </project-private>
