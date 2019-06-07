@@ -1,8 +1,5 @@
 package d3c0de.date;
 
-import d3c0de.formatter.DateFormatter;
-import java.time.LocalDateTime;
-
 /**
  * Classe para definição dos nomes do dia da semana.
  * @see DCalendar, DHoliday, DDate, DTime;

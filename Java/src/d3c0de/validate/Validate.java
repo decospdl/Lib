@@ -19,9 +19,10 @@ public abstract class Validate {
      * @param end valor do fim do range.
      */
     public static void rangeBetween(int value, int begin, int end) {
-        if (value > begin || value < end) {
-            throw new RuntimeException("O valor " + value + " deve ser menor do que "
-                    + begin + " ou maior do que " + end);
+        if (value < begin || value > end) {
+            throw new RuntimeException("O valor " + value + " deve ser maior do que "
+                    + begin + " e menor do que " + end);
+
         }
     }
 
@@ -33,9 +34,9 @@ public abstract class Validate {
      * @param end valor do fim do range.
      */
     public static void rangeOutside(int value, int begin, int end) {
-        if (value < begin || value > end) {
-            throw new RuntimeException("O valor " + value + " deve ser maior do que "
-                    + begin + " e menor do que " + end);
+        if (value >= begin || value <= end) {
+            throw new RuntimeException("O valor " + value + " deve ser menor do que "
+                    + begin + " ou maior do que " + end);
         }
     }
 
@@ -77,6 +78,7 @@ public abstract class Validate {
 
     /**
      * Lança um throw em runtime caso a data não exista.
+     *
      * @param date o formato da data a ser verificada.
      */
     public static void date(String date) {

@@ -1,12 +1,10 @@
 package test;
 
 import d3c0de.date.Date;
-import d3c0de.file.File;
-import d3c0de.formatter.DateFormatter;
-import java.text.DateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
+import d3c0de.date.Time;
+import d3c0de.debugger.Debugger;
+import d3c0de.formatter.StringFormatter;
+import java.util.LinkedList;
 
 /**
  * Classe para teste da lib.
@@ -17,7 +15,8 @@ import java.time.Period;
 public class Test {
 
     public static void main(String[] args) throws Exception {
-        Gui gui = new Gui();
-        gui.setVisible(true);         
+//        Gui gui = new Gui();
+//        gui.setVisible(true);
+        System.out.println(StringFormatter.padZero(2, 5));
     }
 }

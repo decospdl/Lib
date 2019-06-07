@@ -19,7 +19,7 @@ import javax.swing.table.TableColumn;
  *
  * @author d3c0de <decospdl@gmail.com>
  */
-public class TableModel extends AbstractTableModel implements TableModelListener {
+public abstract class TableModel extends AbstractTableModel implements TableModelListener {
 
     private final LinkedList<Object> changedObjects = new LinkedList<>();
     private final LinkedList<Object> changedIndexes = new LinkedList<>();
@@ -35,15 +35,11 @@ public class TableModel extends AbstractTableModel implements TableModelListener
     private Class[] columnClasses;
     private ListSelectionListener lss;
     private String selectedRow;
-   
-    /**
-     * Atualiza os dados da tabela.
-     */
-    public void configTable() {
-        this.table.setModel(this);
-        autoSizeColumn();
+
+    public TableModel(JTable table) {
+        setTable(table);
         this.addTableModelListener(this);
-        this.table.setAutoCreateRowSorter(true);
+        listennerSelectedRow();
     }
 
     /**
@@ -101,7 +97,7 @@ public class TableModel extends AbstractTableModel implements TableModelListener
     /**
      * Ajusta automáticamente as colunas da tabela.
      */
-    private void autoSizeColumn() {
+    public void autoSizeColumn() {
         JTableHeader tableHeader = table.getTableHeader();
         int[] minWidths = new int[table.getColumnCount()];
         int[] maxWidths = new int[table.getColumnCount()];
@@ -322,7 +318,7 @@ public class TableModel extends AbstractTableModel implements TableModelListener
     public void setTable(JTable table) {
         this.table = table;
     }
-    
+
     /**
      * Setter.
      *
@@ -379,8 +375,26 @@ public class TableModel extends AbstractTableModel implements TableModelListener
     public void setClassColumn(Class[] columnClasses) {
         this.columnClasses = columnClasses;
     }
-    
-    public String getSelectedRow(){
+
+    public String getSelectedRow() {
         return selectedRow;
     }
+
+    public void loadDataTable(Object[][] object) {
+        setTableValue(object);
+        table.setModel(this);
+        setRowCount((object == null) ? 0 : object.length);
+        autoSizeColumn();
+    }
+
+    public abstract Object[][] createTableValues();
+
+    public abstract void updateTable(LinkedList<?> persons);
+
+    public abstract void configTableModel();
+
+    public abstract void configTableStyle();
+
+    public abstract void configTableFilter();
+
 }

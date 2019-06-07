@@ -5,11 +5,12 @@
  */
 package test;
 
+import d3c0de.date.Date;
+import d3c0de.finance.Currency;
+import d3c0de.finance.Money;
 import d3c0de.formatter.DateFormatter;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.LinkedList;
-import java.util.stream.Stream;
 
 /**
  *
@@ -24,14 +25,17 @@ public class Gui extends javax.swing.JFrame {
         initComponents();
         LinkedList<Person> persons = new LinkedList<>();
         
-        Person p1 = new Person("Andrézão", 28, DateFormatter.toDate("11/12/1990"));
-        Person p2 = new Person("Tiago", 50, DateFormatter.toDate("11/12/1590"));
-        Person p3 = new Person("Rodrigo", 68, DateFormatter.toDate("13/11/1995"));
-        Person p4 = new Person("Teste",32, DateFormatter.toDate("08/01/1999"));
+        Person p1 = new Person("Andrézão", 28, new Date("11/12/1990 11:33:58").setFormat(Date.BRL_TIME_SECONDS)
+                , "teste", new Money("22,97", Currency.BRL));
+        Person p2 = new Person("Tiago", 50, new Date("11/12/1990 11:33:57").setFormat(Date.BRL_TIME_SECONDS)
+                , "", new Money("22,96", Currency.BRL));
+        Person p3 = new Person("Rodrigo", 68, new Date("11/12/1990 11:33:59").setFormat(Date.BRL_TIME_SECONDS)
+                , null, new Money("10,95", Currency.BRL));
+        Person p4 = new Person("Teste",32, new Date("11/12/1990 11:34:00").setFormat(Date.BRL_TIME_SECONDS)
+                , "",new Money("2,12", Currency.BRL));
         persons.addAll(Arrays.asList(p1,p2,p3,p4));
         
-        PersonTab personTable = new PersonTab(jTable1, PersonDb.toTable());
-        personTable.updateTable(persons);
+        PersonTab personTable = new PersonTab(jTable1, persons);
 
     }
 

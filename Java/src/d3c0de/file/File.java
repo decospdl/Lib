@@ -26,7 +26,7 @@ public abstract class File {
     public static final String PATH_LOGO = PATH_PROJECT + "image\\logo\\";
     public static final String PATH_IMPORT = PATH_PROJECT + "import\\";
     public static final String PATH_CONFIG = PATH_PROJECT + "config\\";
-
+    
     public static List<List<String>> getImportTable(char deliimiter, String pathFile) {
         List<List<String>> records = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(pathFile))) {

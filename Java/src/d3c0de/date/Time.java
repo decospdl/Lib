@@ -1,7 +1,5 @@
 package d3c0de.date;
 
-import d3c0de.formatter.DateFormatter;
-import d3c0de.formatter.NumberFormatter;
 import d3c0de.validate.Validate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -13,14 +11,12 @@ import java.time.format.DateTimeFormatter;
  * @version 1.0.0
  * @author deCOde < decospdl@gmail.com>
  */
-public class Time {
+public class Time implements Comparable<Time> {
 
-    public static int NOW_HOUR = LocalTime.now().getHour();
-    public static int NOW_MINUTE = LocalTime.now().getMinute();
-    public static int NOW_SECOND = LocalTime.now().getSecond();
     private int hour;
     private int minute;
     private int second;
+    private int format;
 
     /**
      * Construtor default inicia com horário do dia.
@@ -32,12 +28,12 @@ public class Time {
     }
 
     /**
-     * Construor com passagem do tempo no formato de string. Devendo ter o
+     * Construor com passagem do tempo no formato de string.Devendo ter o
      * formato "HH:mm:ss", caso inválido irá conflitar com o array split string.
      *
      * @param time tempo no formato de string.
      */
-    public Time(String time) throws Exception {
+    public Time(String time) {
         setTime(time);
     }
 
@@ -48,41 +44,44 @@ public class Time {
      * @param time tempo no formato de string.
      * @return o objeto atualizado com o novo valor.
      */
-    public Time setTime(String time) throws Exception {
+    public Time setTime(String time) {
         this.hour = LocalTime.parse(time, DateTimeFormatter.ISO_TIME).getHour();
         this.minute = LocalTime.parse(time).getMinute();
         this.second = LocalTime.parse(time).getSecond();
         return this;
     }
 
+    public static final int SIMPLE = 0;
+    public static final int SECONDS = 1;
+    public static final int AMPM = 2;
+
     /**
-     * Retorna o horário no formato "HH:mm".
+     * Atriui o formato que será impresso o objeto no toString()
      *
-     * @param seconds true - mostra os segundos / false - esconde os segundos
-     * @return o valor do horário do DTime.
+     * @param format SIMPLE = 0; SECONDS = 1; AMPM = 2;
+     * @return {@link Time Time.class}
      */
-    public String getTime(boolean seconds) {
-        LocalTime time = LocalTime.of(hour, minute, second);
-        if (seconds) {
-            return String.format("%1$tH:%1$tM:%1$tS", time);
-        } else {
-            return String.format("%1$tH:%1$tM", time);
-        }
+    public Time setFormat(int format) {
+        Validate.rangeBetween(format, 0, 2);
+        this.format = format;
+        return this;
     }
 
     /**
-     * O valor da data no format "HH:mm AM/PM".
+     * Retorna o horário no formato "HH:mm".
      *
-     * @param seconds true - mostra os segundos / false - esconde os segundos
-     * @return no formato string a data no formato específico.
+     * @param format SIMPLE = hh:mm SECONDS = hh:mm:ss SIMPLE_AMPM = hh:mm am/pm
+     * SECONDS_AMPM = hh:mm:ss am/pm
+     * @return o valor do horário do DTime.
      */
-    public String getTimeAMPM(boolean seconds) {
+    public String getTime(int format) {
+        this.format = format;
         LocalTime time = LocalTime.of(hour, minute, second);
-        if (seconds) {
-            return String.format("%1$tI:%1$tM:%1$tS %1$tp", time);
-        } else {
-            return String.format("%1$tI:%1$tM %1$tp", time);
-        }
+        String[] timeFormat = new String[]{
+            String.format("%1$tH:%1$tM", time),
+            String.format("%1$tH:%1$tM:%1$tS", time),
+            String.format("%1$tI:%1$tM %1$tp", time)};
+        return timeFormat[format];
     }
 
     /**
@@ -256,36 +255,6 @@ public class Time {
     }
 
     /**
-     * Verifica se o objeto chamador é menor que o passodo por parâmetro.
-     *
-     * @param time o objeto DTime que será comparado.
-     * @return true caso seja menor.
-     */
-    public boolean isLessThan(Time time) {
-        return this.convertSecond() < time.convertSecond();
-    }
-
-    /**
-     * Verifica se o objeto chamador é maior que o passodo por parâmetro.
-     *
-     * @param time o objeto DTime que será comparado.
-     * @return true = caso seja maior.
-     */
-    public boolean isMoreThan(Time time) {
-        return this.convertSecond() > time.convertSecond();
-    }
-
-    /**
-     * Verifica se o objeto chamador é igual que o passodo por parâmetro.
-     *
-     * @param time o objeto DTime que será comparado.
-     * @return true = caso seja iguais.
-     */
-    public boolean isEqualThan(Time time) {
-        return this.convertSecond() == time.convertSecond();
-    }
-
-    /**
      * Adiciona a quantidade de segundos no valor existente no objeto DTime.
      *
      * @param second a quantidade de segundos adicionado.
@@ -316,5 +285,71 @@ public class Time {
     public Time addHour(int hour) {
         int newTime = this.convertSecond() + hourTo(hour).convertSecond();
         return secondTo(newTime);
+    }
+
+    /**
+     * Compara o hora do tempo.
+     *
+     * @param time o {@link Time Time.class} que será comparado
+     * @return 1 = maior | -1 = menor | 0 = igual
+     */
+    public int compareHour(Time time) {
+        if (hour > time.getHour()) {
+            return 1;
+        } else if (hour < time.getHour()) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Compara o minuto do tempo.
+     *
+     * @param time o {@link Time Time.class} que será comparado
+     * @return 1 = maior | -1 = menor | 0 = igual
+     */
+    public int compareMinute(Time time) {
+        if (minute > time.getMinute()) {
+            return 1;
+        } else if (minute < time.getMinute()) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Compara o segundos do tempo.
+     *
+     * @param time o {@link Time Time.class} que será comparado
+     * @return 1 = maior | -1 = menor | 0 = igual
+     */
+    public int compareSecond(Time time) {
+        if (second > time.getSecond()) {
+            return 1;
+        } else if (second < time.getSecond()) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public int compareTo(Time time) {
+        int hourAux = compareHour(time);
+        if (hourAux == 0) {
+            int minuteAux = compareMinute(time);
+            if (minuteAux == 0) {
+                return compareSecond(time);
+            }
+            return minuteAux;
+        }
+        return hourAux;
+    }
+
+    @Override
+    public String toString() {
+        return getTime(format);
     }
 }

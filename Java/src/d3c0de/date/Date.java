@@ -1,6 +1,8 @@
 package d3c0de.date;
 
+import d3c0de.formatter.Converter;
 import d3c0de.formatter.DateFormatter;
+import d3c0de.validate.Validate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -13,20 +15,19 @@ import java.time.temporal.ChronoUnit;
  * @version 1.0.0
  * @author d3c0de <decospdl@gmail.com>
  */
-public class Date extends Time {
+public class Date implements Comparable<Date> {
 
-    public static int NOW_DAY = LocalDate.now().getDayOfMonth();
-    public static int NOW_MONTH = LocalDate.now().getMonth().getValue();
-    public static int NOW_YEAR = LocalDate.now().getYear();
     private int day;
     private int month;
     private int year;
+    private int format;
+    private Time time;
 
     /**
      * Construtor default inicia com a Data e horário do dia.
      */
     public Date() {
-        super();
+        this.time = new Time();
         this.day = LocalDate.now().getDayOfMonth();
         this.month = LocalDate.now().getMonth().getValue();
         this.year = LocalDate.now().getYear();
@@ -38,11 +39,8 @@ public class Date extends Time {
      * inválido irá conflitar com o array split string.
      *
      * @param date data no formato "DD/MM/YYYY".
-     * @param time hora no formato "HH:mm:ss".
-     * @throws java.lang.Exception
      */
-    public Date(String date, String time) throws Exception {
-        super(time);
+    public Date(String date) {
         setDate(date);
     }
 
@@ -54,52 +52,86 @@ public class Date extends Time {
      * @return o objeto atualizado com o novo valor.
      */
     public Date setDate(String date) {
-        if (date != null) {
-            if(date.length() > 10){
-                date = date.substring(0, date.indexOf(" "));
+        if (date.length() > 10) {
+            String split[] = date.split(" ");
+            if (date.contains("/")) {
+                dateBrazilToDate(split[0], split[1]);
+            } else {
+                dateUsToDate(split[0], split[1]);
             }
-            this.day = LocalDate.parse(date).getDayOfMonth();
-            this.month = LocalDate.parse(date).getMonth().getValue();
-            this.year = LocalDate.parse(date).getYear();
-            return this;
+        } else {
+            if (date.contains("/")) {
+                dateBrazilToDate(date, "00:00:00");
+            } else {
+                dateUsToDate(date, "00:00:00");
+            }
         }
-        return null;
+        return this;
+    }
+
+    /**
+     * Atribui o valores para cada atributo do objeto no formato de data Brasil.
+     *
+     * @param date Exemplo: "DD/MM/YYYY"
+     * @param time Exemplo: "HH:MM:SS"
+     */
+    private void dateUsToDate(String date, String time) {
+        int[] listDate = Converter.toIntList(date.split("-"));
+        this.year = listDate[0];
+        this.month = listDate[1];
+        this.day = listDate[2];
+        this.time = new Time(time);
+    }
+
+    /**
+     * Atribui o valores para cada atributo do objeto no formato de data US.
+     *
+     * @param date Exemplo: "YYYY-MM-DD"
+     * @param time Exemplo: "HH:MM:SS"
+     */
+    private void dateBrazilToDate(String date, String time) {
+        int[] listDate = Converter.toIntList(date.split("/"));
+        this.year = listDate[2];
+        this.month = listDate[1];
+        this.day = listDate[0];
+        this.time = new Time(time);
+    }
+
+    public static int BRL = 0;
+    public static int BRL_TIME = 1;
+    public static int BRL_TIME_SECONDS = 2;
+    public static int BRL_TIME_AMPM = 3;
+    public static int US = 4;
+    public static int US_TIME = 5;
+    public static int US_TIME_SECONDS = 6;
+    public static int US_TIME_AMPM = 7;
+
+    public Date setFormat(int format) {
+        Validate.rangeBetween(format, 0, 7);
+        this.format = format;
+        return this;
     }
 
     /**
      * Retorna a data no formato "dd/MM/YYYY".
      *
+     * @param format BRL = DD/MM/YYYY BRL_TIME = DD/MM/YYYY hh:mm
+     * BRL_TIME_SECONDS = DD/MM/YYYY hh:mm:ss BRL_TIME_AMPM = DD/MM/YYYY US
+     * US_TIME US_TIME_SECONDS US_TIME_AMPM
      * @return o valor do horário do DDate.
      */
-    public String getDate() {
-        return String.format("%1$02d/%2$02d/%3$04d", day, month, year);
-    }
-
-    /**
-     * Retorna a data no formato "dd/MM/YYYY HH:mm:ss".
-     *
-     * @return o valor do horário do DDate.
-     */
-    public String getDateTime() {
-        return getDate() + " " + getTime(false);
-    }
-
-    /**
-     * A data no formato para o banco de dados YYYY-MM-DD
-     *
-     * @return a data para DB
-     */
-    public String getDbDate() {
-        return String.format("%1$04d-%2$02d-%3$02d", year, month, day);
-    }
-
-    /**
-     * A data no formato para o banco de dados YYYY-MM-DD HH:mm:ss
-     *
-     * @return a data para DB
-     */
-    public String getDbDateTime() {
-        return getDbDate() + " " + getTime(true);
+    public String getDate(int format) {
+        this.format = format;
+        String[] dateFormat = new String[]{
+            String.format("%1$02d/%2$02d/%3$04d", day, month, year),
+            String.format("%1$02d/%2$02d/%3$04d ", day, month, year) + time.getTime(Time.SIMPLE),
+            String.format("%1$02d/%2$02d/%3$04d ", day, month, year) + time.getTime(Time.SECONDS),
+            String.format("%1$02d/%2$02d/%3$04d ", day, month, year) + time.getTime(Time.AMPM),
+            String.format("%3$04d-%2$02d-%1$02d ", day, month, year),
+            String.format("%3$04d-%2$02d-%1$02d ", day, month, year) + time.getTime(Time.SIMPLE),
+            String.format("%3$04d-%2$02d-%1$02d ", day, month, year) + time.getTime(Time.SECONDS),
+            String.format("%3$04d-%2$02d-%1$02d ", day, month, year) + time.getTime(Time.AMPM)};
+        return dateFormat[format];
     }
 
     /**
@@ -127,6 +159,19 @@ public class Date extends Time {
      */
     public int getYear() {
         return year;
+    }
+
+    /**
+     * Retorna o objeto contida no objeto Date.
+     * 
+     * @return {@link Time Time.class}
+     */
+    public Time getTime() {
+        return time;
+    }
+
+    public void setTime(Time time) {
+        this.time = time;
     }
 
     /**
@@ -173,7 +218,7 @@ public class Date extends Time {
      */
     public Date addDay(int days) {
         return DateFormatter.toDate(LocalDateTime.of(year, month, day,
-                getHour(), getMinute(), getSecond()).plusDays(days));
+                time.getHour(), time.getMinute(), time.getSecond()).plusDays(days));
     }
 
     /**
@@ -186,30 +231,6 @@ public class Date extends Time {
         LocalDateTime thisDate = DateFormatter.toLocalDateTime(this);
         LocalDateTime otherDate = DateFormatter.toLocalDateTime(date);
         return ChronoUnit.DAYS.between(thisDate, otherDate);
-    }
-
-    /**
-     * Verifica se a data é igual ou antes da data que chama a função.
-     *
-     * @param date da que será comparada.
-     * @return true - se é menor ou igual | false = se é maior.
-     */
-    public boolean isBeforeOrEqual(Date date) {
-        LocalDateTime thisDate = DateFormatter.toLocalDateTime(this);
-        LocalDateTime otherDate = DateFormatter.toLocalDateTime(date);
-        return thisDate.isBefore(otherDate) || thisDate.isEqual(otherDate);
-    }
-
-    /**
-     * Verifica se a data é depois da data que chama a função.
-     *
-     * @param date que será comparada.
-     * @return true - se é depois | false = se é antes ou igual.
-     */
-    public boolean isAfterOrEqual(Date date) {
-        LocalDateTime thisDate = DateFormatter.toLocalDateTime(this);
-        LocalDateTime otherDate = DateFormatter.toLocalDateTime(date);
-        return thisDate.isAfter(otherDate) || thisDate.isEqual(otherDate);
     }
 
     /**
@@ -231,5 +252,74 @@ public class Date extends Time {
     public String getWeekDay(int typeName) {
         LocalDateTime date = DateFormatter.toLocalDateTime(this);
         return Week.getName(date.getDayOfWeek().getValue(), typeName);
+    }
+
+    /**
+     * Compara o ano da data.
+     *
+     * @param date a {@link Data Data.class} que será comparada
+     * @return 1 = maior | -1 = menor | 0 = igual
+     */
+    public int compareYear(Date date) {
+        if (year > date.getYear()) {
+            return 1;
+        } else if (year < date.getYear()) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Compara o mês da data.
+     *
+     * @param date a {@link Data Data.class} que será comparada
+     * @return 1 = maior | -1 = menor | 0 = igual
+     */
+    public int compareMonth(Date date) {
+        if (month > date.getMonth()) {
+            return 1;
+        } else if (month < date.getMonth()) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Compara o dia da data.
+     *
+     * @param date a {@link Data Data.class} que será comparada
+     * @return 1 = maior | -1 = menor | 0 = igual
+     */
+    public int compareDay(Date date) {
+        if (day > date.getDay()) {
+            return 1;
+        } else if (day < date.getDay()) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public int compareTo(Date date) {
+        int yearAux = compareYear(date);
+        if (yearAux == 0) {
+            int monthAux = compareMonth(date);
+            if (monthAux == 0) {
+                int dayAux = compareDay(date);
+                if (dayAux == 0) {
+                    return time.compareTo(date.getTime());
+                }
+            }
+            return monthAux;
+        }
+        return yearAux;
+    }
+
+    @Override
+    public String toString() {
+        return getDate(format);
     }
 }
